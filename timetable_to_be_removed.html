@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title> TCAT </title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="styles/all.css" media="all"/>
+</head>
+
+<body>
+
+  <div id="header">
+    <img alt="tcat_logo" src="images/tcat_logo.png">
+  </div>
+
+  <nav>
+    <ul>
+      <li><button><a href="Route30.html">Route 30</a></button></li>
+      <li><button><a href="Route72.html">Route 72</a></button></li>
+      <li><button>Route 89</button></li>
+      <li><button><a href ="GreenSt.html">Green Street</a></button></li>
+      <li><button><a href="Buses.html">Buses</a></button></li>
+      <li><button><a href="timetable.html">TimeTable</a></button></li>
+    </ul>
+  </nav>
+
+  <div id="api_calls">
+    <p>This is an API call.</p>
+    <p>This is another API call.</p>
+  </div>
+
+  <div id="map_it">
+    <ul>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type='text/javascript'>
+    // $(document).ready(function(){
+    //    $.ajax({
+    //           url: 'https://gateway.api.cloud.wso2.com:443/t/mystop/tcat/v1/rest/Vehicles/GetAllVehicles',
+    //           type: 'GET',
+    //           dataType: 'application/json',
+    //           success: function() { alert('Worked'); },
+    //           error: function() { alert('Did not work'); },
+    //           beforeSend: setHeader (xhr)
+    //         });
+    //       });
+    //       function setHeader(xhr) {
+    //         xhr.setRequestHeader('Accept', 'application/json')
+    //         xhr.setRequestHeader('Authorization', 'Bearer e5159b89-86c1-3cca-8412-59de037c674b')
+    //       };
+    // };
+
+    $(document).ready(function () {
+      var token = 'Bearer e5159b89-86c1-3cca-8412-59de037c674b';
+      $.ajax({
+        url: 'https://gateway.api.cloud.wso2.com:443/t/mystop/tcat/v1/rest/StopDepartures/Get/165',
+        type: 'GET',
+        dataType: 'json',
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader("Authorization", token);
+        },
+        //data: 'json=' + escape(JSON.stringify(createRequestObject)),
+        success: function(msg) {
+          //var markers = [];
+          var data = JSON.stringify(msg);
+          console.log(msg);
+          TimeTable(msg);
+          $("#orders").text(data);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          alert(errorThrown);
+        }
+      // }).done(function(data) {
+      //  alert(data);
+      });
+    });
+
+    </script>
+  <script language="javascript" type="text/javascript">
+
+    function TimeTable(msg) {
+      var schedule = [];
+      var api_eta, api_edt, unix_eta, unix_edt, hours, mins, formatted_eta, formatted_edt, until_arriv;
+
+      // For loop to iterate through the list of Departures 
+      // (msg[0].RouteDirections[i].Departures[j].ETA)
+      // Gives us a JSON date
+      for (var i = 0; i < msg[0].RouteDirections.length; i ++) {
+        for (var j = 0; j < msg[0].RouteDirections[i].Departures.length; j++) {
+          var bus_time = {};
+          api_eta = (msg[0].RouteDirections[i].Departures[j].ETA);
+          api_edt = (msg[0].RouteDirections[i].Departures[j].EDT);
+          console.log(api_edt);
+          // Need to chop off the "/Date(" in the API ETA. Apparently .substr(6) just works
+          // and is able to parse the ")/" at the end of a JSON date. Date format here will now be
+          // "15XXXXXXXXXXX-500", with the -500 just indicating EST.
+          unix_eta = new Date(parseInt(api_eta.substr(6)));
+          hours = unix_eta.getHours(); 
+          // Need to format for minutes that are < 10; getMinutes will return single digits,
+          // resulting in times like 17:4 instead of 17:04
+          if (unix_eta.getMinutes() < 10 ) {
+            mins = '0' + unix_eta.getMinutes();
+          } else {
+            mins = unix_eta.getMinutes();
+          }
+          formatted_eta = hours + ':' + mins;
+
+          unix_edt = new Date(parseInt(api_edt.substr(6)));
+          hours = unix_edt.getHours();
+          if (unix_edt.getMinutes() < 10) {
+            mins = '0' + unix_edt.getMinutes();
+          } else {
+            mins = unix_edt.getMinutes();
+          }
+          formatted_edt = hours + ':' + mins;
+
+          // UNIX format ETA time minus the current time converted to minutes and rounded up
+          until_arriv = Math.ceil((parseInt(api_eta.substr(6, 13)) - Date.now()) / 60000); 
+          //console.log(formatted_eta);
+          //console.log(formatted_edt);
+          //console.log(until_arriv);
+
+          // Put it all into the bus_time object which is pushed onto the schedule
+          bus_time.Route = (msg[0].RouteDirections[i].RouteId)
+          bus_time.ETA = formatted_eta;
+          bus_time.until_arriv = until_arriv;
+          bus_time.EDT = formatted_edt;
+          schedule.push(bus_time);
+        }
+        j = 0;
+      }
+      console.log(schedule); // When displaying schedule info will need to account for "arrived but not yet departed"
+    }
+  </script>

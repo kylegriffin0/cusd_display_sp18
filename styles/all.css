@@ -1,0 +1,56 @@
+#header img {
+    position:relative;
+    left:50%;
+    transform: translateX(-50%);
+    padding-top:10px;
+    padding-bottom:10px;
+    max-width:100%;
+    height:auto;
+}
+
+nav {
+    text-align: center;
+
+}
+
+nav ul li {
+    float:left;
+    padding-left:40px;
+    padding-right:40px;
+    transition: ease-in-out 0.4s;
+    padding-top:10px;
+    padding-bottom:5px;
+}
+
+nav ul li a {
+    color:#0E0E0C;
+    font-size:1.5em;
+    text-decoration: none;
+}
+
+nav li:hover {
+    background-color: #B0B7C3;
+}
+
+#timetable {
+    margin-top:30px;
+}
+
+#map {
+    height:600px;
+}
+
+body {
+    font-family: proxima-nova, sans-serif;
+    font-style: normal;
+    font-weight: 100;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 0;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: top;   
+}
