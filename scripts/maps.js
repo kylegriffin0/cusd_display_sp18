@@ -1,6 +1,8 @@
 var map;
 var markers = [];
 
+
+
 function DrawMap() {
   var latlng = new google.maps.LatLng(42.46, -76.496506);
   var myOptions =
@@ -19,8 +21,11 @@ function MapRoute(msg) {
   var i;
   var image;
   var greenstreet = [11, 14, 17, 20, 21, 30, 31, 32, 36, 37, 40, 43, 51, 52, 53, 65, 67, 90];
+  //var greenstreet = [30];
+  console.log("here");
   for (i = 0; i < msg.length; i++) {
     if (greenstreet.includes(msg[i].RouteId)) {
+      console.log(msg[i]);
       var address = [msg[i].Latitude, msg[i].Longitude];
       var position = new google.maps.LatLng(address[0], address[1]);
       if (msg[i].Direction == 'O') {

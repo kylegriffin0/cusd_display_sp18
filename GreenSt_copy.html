@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title> TCAT </title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="styles/all.css" media="all"/>
+  <script language="javascript" type="text/javascript" src="scripts/maps.js"> </script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZtZePBTLXPSvNiZL3wPoNmbAugSiJdWc&callback=initMap"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+  <div id="header">
+    <img alt="tcat_logo" src="images/tcat_logo.png">
+  </div>
+
+  <nav>
+    <ul>
+      <li><a href="GreenSt.html">Green Street</a></li>
+      <li><a href="Buses.html">Buses</a></li>
+      <li><a href="Timetable.html">Timetable</a></li>
+    </ul>
+  </nav>
+
+  <div id="map_it">
+    <ul>
+    <script>
+    // $(document).ready(function(){
+    //    $.ajax({
+    //           url: 'https://gateway.api.cloud.wso2.com:443/t/mystop/tcat/v1/rest/Vehicles/GetAllVehicles',
+    //           type: 'GET',
+    //           dataType: 'application/json',
+    //           success: function() { alert('Worked'); },
+    //           error: function() { alert('Did not work'); },
+    //           beforeSend: setHeader (xhr)
+    //         });
+    //       });
+    //       function setHeader(xhr) {
+    //         xhr.setRequestHeader('Accept', 'application/json')
+    //         xhr.setRequestHeader('Authorization', 'Bearer e5159b89-86c1-3cca-8412-59de037c674b')
+    //       };
+    // };
+
+    var map;
+    var markers = [];
+
+    $(document).ready(function () {
+      var token = 'Bearer e5159b89-86c1-3cca-8412-59de037c674b';
+      $.ajax({
+        url: 'https://gateway.api.cloud.wso2.com:443/t/mystop/tcat/v1/rest/Vehicles/GetAllVehicles',
+        type: 'GET',
+        dataType: 'json',
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader("Authorization", token);
+        },
+        //data: 'json=' + escape(JSON.stringify(createRequestObject)),
+        success: function(msg) {
+          //var markers = [];
+          var data = JSON.stringify(msg);
+          console.log(msg);
+          DrawMap();
+          MapRoute(msg);
+          setTimeout(function(){
+            //location.reload();
+          }, 10000); 
+          $("#orders").text(data);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          alert(errorThrown);
+        }
+      // }).done(function(data) {
+      //  alert(data);
+      });
+    });
+    </script>
+
+
+    <script>
+
+    //function Button1_onclick() {
+    //    FindLocaton();
+    //}
+    </script>
+    }
+  </ul>
+  </div>
+</head>
+<body>
+<div id ="map" style="height: 720px">
+</div>
+      <li>The next Route 30 bus will be arriving in y minutes.</li>
+    </ul>
+</div>
+<div id='orders'></div>
+</body>
+</html>

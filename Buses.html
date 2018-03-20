@@ -8,9 +8,11 @@
   <script src="scripts/jquery-3.2.1.min.js" type="text/javascript"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZtZePBTLXPSvNiZL3wPoNmbAugSiJdWc&callback=initMap" type="text/javascript"></script>
   <script src="scripts/maps.js" type="text/javascript"></script>
+  <script src="scripts/getVehicles.js" type="text/javascript"></script>
 </head>
 
 <body>
+
   <div id="header">
     <img alt="tcat_logo" src="images/tcat_logo.png">
   </div>
@@ -25,18 +27,15 @@
 
   <div id="map">
     <!--  draw map -->
-
+    <script type="text/javascript">
+      DrawMap();
+      var msg = getBuses();
+      console.log(msg);
+      MapRoute(msg);
+    </script>
 
     <!-- call the api -->
     <script src="scripts/getVehicles.js" type="text/javascript"></script>
-    <script type="text/javascript">
-      function initMap() {
-        return;
-      }
-      var buses = getBuses();
-      DrawMap();
-      MapRoute(buses);
-    </script>
   </div>
 
 </body>

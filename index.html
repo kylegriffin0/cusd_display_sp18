@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html>
-
 <head>
   <title> TCAT </title>
   <meta charset="utf-8">
@@ -30,43 +27,3 @@
   </nav>
   <div id ="map" style="height: 720px">
   </div>
-
-  <script language="javascript" type="text/javascript">
-    var msg;
-
-    getBuses2();
-    update();
-    //getMsg();
-    /*function setMsg (data) {
-      msg = data;
-    }*/
-
-    function getMsg() {
-      console.log(msg);
-      return msg;
-    }
-
-    function update () {
-      $.when(getBuses2()).done(function (a1, a2, a3) {
-        msg = a1;
-        getMsg();
-        DrawMap();
-        MapRoute(msg);
-      }).then(function() {
-        setTimeout(update,60000);
-      });
-    }
-
-    function DeleteMarkers() {
-        //Loop through all the markers and remove
-        for (var i = 0; i < markers.length; i++) {
-            markers[i].setMap(null);
-        }
-        markers = [];
-    };
-
-</script>
-<body>
-<div id='orders'></div>
-</body>
-</html>
