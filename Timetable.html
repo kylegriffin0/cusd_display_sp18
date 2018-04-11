@@ -10,14 +10,15 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">  -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="scripts/createTimetable.js" type="text/javascript"></script> 
+  <script src="./scripts/createTimetable.js" type="text/javascript"></script> 
 </head>
 
 <body>
-
+  
   <div id="header">
     <img alt="tcat_logo" src="images/tcat_logo.png">
   </div>
+
 
   <nav>
     <ul>
@@ -27,77 +28,44 @@
     </ul>
   </nav>
 
+  <script src="./scripts/getTimetable.js" type="text/javascript"></script> 
   
+    <!--<p><strong>Route 30:</strong> Estimated Arrival Times</p>--> 
   
-  <div id="route30">
-    <!--<p><strong>Route 30:</strong> Estimated Arrival Times</p>-->
-	<button type="button" onclick="myFunction()" class="btn btn-primary">Route 30</button>
-    <!--route30 info sent here -->
-  </div>
+  <!--script type="text/javascript">
+  var mybutton=document.getElementById('button');
+   button.onclick=   -->
+   
+	
   
-  <script src="scripts/getTimetable.js" type="text/javascript"></script>
+  <div id="time">
+    
+
+
+    <!-- call the api -->
+    <!--<script src="scripts/new_file.js" type="text/javascript"></script>  -->
+	
+		
   
-      <!--<button class="btn" type="submit">Button</button> --->
+      <!--<button class="btn" type="submit">Button</button> -->
 	 
-  <script>
+  <script language="javascript">
   function myFunction(){
 	document.write("<p><strong>Estimated Arrival Times</p>");
+	
 	var x= document.createElement("BUTTON");
 	var t = document.createTextNode("Click me");
 	
     x.appendChild(t);
     document.body.appendChild(x);
+	
+	var script= document.createElement("script");
+	script.type="text/javascript";
+	script.src="scripts/getTimetable.js";
+	document.getElementsByTagName.appendChild(script); 
   }
-  </script>
-
-  <div id="route32">
-    <!--<p><strong>Route 32:</strong> Estimated Arrival Times</p> -->
-	<br></br>
-	<button type="button" onclick="myFunction()" class="btn btn-primary">Route 32</button>
-    <!--route32 info sent here -->
-  </div>
-
-  <div id="route82">
-    <p><strong>Route 82:</strong> Estimated Arrival Times</p>
-	<button type="button" onclick="" class="btn btn-primary">Route 82</button>
-    <!--route82 info sent here -->
-  </div>
-
-  <div id="route90">
-    <p><strong>Route 90:</strong> Estimated Arrival Times</p>
-	<button type="button" onclick="" class="btn btn-primary">Route 90</button>
-    <!--route90 info sent here -->
-  </div>
-
-  <div id="route51">
-    <p><strong>Route 51:</strong> Estimated Arrival Times</p>
-	<button type="button" onclick="" class="btn btn-primary">Route 51</button>
-    <!--route90 info sent here -->
-  </div>
-
-  <div id="route52">
-    <p><strong>Route 52:</strong> Estimated Arrival Times</p>
-	<button type="button" onclick="" class="btn btn-primary">Route 52</button>
-    <!--route90 info sent here -->
-  </div>
+  </script> 
   
-  <div id="route53">
-    <p><strong>Route 53:</strong> Estimated Arrival Times</p>
-	<button type="button" onclick="" class="btn btn-primary">Route 53</button>
-    <!--route90 info sent here -->
-  </div>
-  
-  <div id="route65">
-    <p><strong>Route 65:</strong> Estimated Arrival Times</p>
-	<button type="button" onclick="" class="btn btn-primary">Route 65</button>
-    <!--route90 info sent here -->
-  </div>
-  
-  <div id="route67">
-    <p><strong>Route 67:</strong> Estimated Arrival Times</p>
-	<button type="button" onclick="" class="btn btn-primary">Route 67</button>
-    <!--route90 info sent here -->
-  </div>
   
 
 </body>
