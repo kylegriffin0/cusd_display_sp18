@@ -1,4 +1,4 @@
-function TimeTable(msg) {
+function Timetable(msg) {
   console.log(msg);
   //RouteDirections is an array of Route objects - all buses that stop at the defined StopID, grouped by route
   //Departures is an array of departure + arrival times for each bus in the specific route, within the Route object
@@ -6,27 +6,14 @@ function TimeTable(msg) {
 
   //for each route
   var schedule = [];
-  var api_eta, api_edt, unix_eta, unix_edt, hours, mins, formatted_eta, formatted_edt, until_arriv;
+  var api_eta, api_edt, unix_eta, unix_edt, hours, mins, formatted_eta, formatted_edt, until_arriv, until_dep;
 
-  var timediv = document.getElementById("time");
-  var linebreak = document.createElement("br");
+
   // For loop to iterate through the list of Departures 
   // (msg[0].RouteDirections[i].Departures[j].ETA)
   // Gives us a JSON date
   for (var i = 0; i < msg[0].RouteDirections.length; i ++) {
 
-    //This if statement filters out non-active routes
-    if (msg[0].RouteDirections[i].Departures.length != 0) {
-      var div = document.createElement("div");
-      div.setAttribute("id", "div" + msg[0].RouteDirections[i].RouteId.toString());;
-      div.style.width = "100px";
-      div.style.height = "200px";
-      div.innerHTML = "<span style=\'font-size:20px\''> Route " + msg[0].RouteDirections[i].RouteId.toString() +
-        "</span>";
-     // div.style.fontSize = "150%";
-      timediv.appendChild(div);
-      console.log(div.innerHTML);
-    }
     for (var j = 0; j < msg[0].RouteDirections[i].Departures.length; j++) {
       var bus_time = {};
       api_eta = (msg[0].RouteDirections[i].Departures[j].ETA);
@@ -56,102 +43,88 @@ function TimeTable(msg) {
 
       // UNIX format ETA time minus the current time converted to minutes and rounded up
       until_arriv = Math.ceil((parseInt(api_eta.substr(6, 13)) - Date.now()) / 60000); 
+      until_dep = Math.ceil((parseInt(api_edt.substr(6, 13)) - Date.now()) / 60000);
       //console.log(formatted_eta);
       //console.log(formatted_edt);
       //console.log(until_arriv);
 
-      // Put it all into the bus_time object which is pushed onto the schedule
+      // Put it all into a bus_time 'object' which is pushed onto the schedule
       bus_time.Route = (msg[0].RouteDirections[i].RouteId)
+      bus_time.NextStop = 
       bus_time.ETA = formatted_eta;
-      bus_time.until_arriv = until_arriv;
+      bus_time.UntilArriv = until_arriv;
       bus_time.EDT = formatted_edt;
+      bus_time.UntilDep = until_dep;
+      bus_time.Destination = msg[0].RouteDirections[i].Departures[j].Trip.InternetServiceDesc;
       schedule.push(bus_time);
 
 
       var linebreak = document.createElement('br');
-      div.appendChild(linebreak);
-      var time = document.createTextNode(bus_time.ETA);
-      div.appendChild(time);
+
 
     }
     j = 0;
   }
+
+  schedule.sort(sortFunction);
   console.log(schedule);
-  // When displaying schedule info will need to account for "arrived but not yet departed"
+  return schedule;
 
+}
+  
 
-  return(schedule);
+// Sorting the schedule based on ETA - might want to use ETD?
+
+function sortFunction(a, b) {
+
+  if (a.EDT === b.EDT) {
+    return 0;
+  }
+  else {
+    return (a.EDT < b.EDT ? -1 : 1);
+  }
+}
+
+function displayTimetable (schedule) {
+  var timediv = document.getElementById("timetable_panel");
+  var linebreak = document.createElement("br");
+  var eta, dest, route, edt, flag;
+
+  var posi = document.getElementById("timetable_panel").getBoundingClientRect();
+
+  // WILL NEED TO CHANGE FOR LOOP SIZE TO ACCOUNT FOR SCREEN SIZE
+  for (var i = 0; i < schedule.length; i++) {
+      var div = document.createElement("div");
+      div.setAttribute("id", "div" + schedule[i].Route);
+      div.className = "timedata";
+      div.style.fontFamily = "Helvetica Neue"
+      //div.style.height = ((posi.height - posi.height * .05) / 10).toString() + "px";
+      div.style.height = (95 / 9).toString() + "%";
+      //div.innerHTML = "<span style=\'font-size:20px\''> " + msg[0].RouteDirections[i].RouteId.toString() +
+      //"</span>";
+     // div.style.fontSize = "150%";
+      timediv.appendChild(div);
+          // div.appendChild(linebreak);
+      
+
+      route = document.createElement("div");
+      route.className = "timeroute";
+      route.innerHTML = schedule[i].Route;
+
+      dest = document.createElement("div");
+      dest.className = "timedest";
+      dest.innerHTML = schedule[i].Destination;
+
+      edt = document.createElement("div");
+      edt.className = "timeedt";
+      edt.innerHTML = schedule[i].UntilDep + " min";
+
+      div.appendChild(route);
+      div.appendChild(dest);
+      div.appendChild(edt);
+
+  }
 }
 
 
-/*
-    if (numOfDeparts != 0 && routeID == 32) {
 
-      for (bus=0; bus<route.Departures.length; bus++) {
-
-        var eta = route.Departures[bus].ETA;
-        console.log(eta);
-        var substring = eta.replace("/Date(", "");
-        substring = substring.replace("000-0500)/", "");
-        console.log(substring);
-
-        var t = new Date(substring * 1000);
-        var formatted = ('0' + t.getHours()).slice(-2) + ':' + ('0' + t.getMinutes()).slice(-2);
-        console.log(formatted);
-        document.getElementById("route32").innerHTML += formatted + '<br>';
-      }
-
-    } else if (numOfDeparts == 0 && routeID == 32) {
-
-      console.log("There are no scheduled departures.");
-      document.getElementById("route32").innerHTML += 'There are no scheduled departures. ';
-
-    }
-
-    if (numOfDeparts != 0 && routeID == 82) {
-
-      for (bus=0; bus<route.Departures.length; bus++) {
-
-        var eta = route.Departures[bus].ETA;
-        console.log(eta);
-        var substring = eta.replace("/Date(", "");
-        substring = substring.replace("000-0500)/", "");
-        console.log(substring);
-
-        var t = new Date(substring * 1000);
-        var formatted = ('0' + t.getHours()).slice(-2) + ':' + ('0' + t.getMinutes()).slice(-2);
-        console.log(formatted);
-        document.getElementById("route82").innerHTML += formatted + '<br>';
-      }
-
-    } else if (numOfDeparts == 0 && routeID == 82) {
-
-      console.log("There are no scheduled departures.");
-      document.getElementById("route82").innerHTML += 'There are no scheduled departures. ';
-
-    }
-    
-    if (numOfDeparts != 0 && routeID == 90) {
-
-      for (bus=0; bus<route.Departures.length; bus++) {
-
-        var eta = route.Departures[bus].ETA;
-        console.log(eta);
-        var substring = eta.replace("/Date(", "");
-        substring = substring.replace("000-0500)/", "");
-        console.log(substring);
-
-        var t = new Date(substring * 1000);
-        var formatted = ('0' + t.getHours()).slice(-2) + ':' + ('0' + t.getMinutes()).slice(-2);
-        console.log(formatted);
-        document.getElementById("route90").innerHTML += formatted + '<br>';
-      }
-
-    } else if (numOfDeparts == 0 && routeID == 90) {
-
-      console.log("There are no scheduled departures.");
-      document.getElementById("route90").innerHTML += 'There are no scheduled departures. ';
-
-    }
-  }
-} */

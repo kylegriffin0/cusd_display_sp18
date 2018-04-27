@@ -3,7 +3,7 @@
     left:50%;
     transform: translateX(-50%);
     padding-top:10px;
-    padding-bottom:10px;
+    padding:10px;
     max-width:100%;
     height:auto;
 }
@@ -19,7 +19,8 @@ nav ul li {
     padding-right:40px;
     transition: ease-in-out 0.4s;
     padding-top:10px;
-    padding-bottom:5px;
+    padding:5px;
+
 }
 
 nav ul li a {
@@ -40,8 +41,37 @@ nav li:hover {
     height:600px;
 }
 
+#weather {
+    position:relative;
+    left:93%;
+    top: -10%;
+    width:5%;
+    color:black;
+}
+
+#scrollbar {
+    overflow:hidden;
+    white-space: nowrap;
+    color:black;
+    background-color:orange;
+    height:5%;
+    font-size: 22pt;
+    font-weight: 500;
+    vertical-align: middle;
+}
+
+#scrollbar p {
+    display: inline-block;
+    padding-left: 100%;
+    animation: scrollbar 10s linear infinite;
+}
+
+@keyframes scrollbar {
+    0%   { transform: translate(0, 0); }
+    100% { transform: translate(-100%, 0); }
+}
 body {
-    font-family: proxima-nova, sans-serif;
+    font-family: Roberto, sans-serif;
     font-style: normal;
     font-weight: 100;
 }
@@ -54,3 +84,82 @@ ul {
     display: inline-block;
     vertical-align: top;   
 }
+
+.refroute {
+    width : 10%;
+    height : 100%;
+    border-bottom : 1px solid grey;
+    align-self : center;
+    text-align : center;
+    display :table-cell;
+    vertical-align : middle;
+    font-weight : bold;
+    text-decoration: underline;
+}
+
+.refdest {
+    width : 70%;
+    height : 100%;
+    border-bottom : 1px solid grey;
+    align-self : left;
+    text-align : center;
+    vertical-align : middle;
+    display: table-cell;
+    font-weight : bold;
+
+    text-decoration: underline;
+}
+.refedt {
+    width : 20%;
+    height : 100%;
+    border-bottom : 1px solid grey;
+    align-self : left;
+    text-align : center;
+    vertical-align : middle;
+    display:table-cell;
+    font-weight : bold;
+    position:relative;
+    text-decoration: underline;
+
+}
+
+.timedata {
+
+    width : 100%;
+    /*height : 10.5%;*/
+    border-bottom : 1px solid grey;
+    display : table;
+    font-size: 18pt;
+
+}
+
+.timeroute {
+    width : 12%;
+    text-align : center;
+    vertical-align : middle;
+    display:table-cell;
+    font-weight : bold;
+    top:0%;
+
+}
+
+.timedest {
+    width : 68%;
+    align-self : left;
+    text-align : left;
+    vertical-align : middle;
+    font-weight : bold;
+    font-style: italic;
+    position:relative;
+    display: table-cell;
+}
+
+.timeedt {
+    width : 20%;
+    text-align : center;
+    vertical-align : middle;
+    font-weight : bold;
+    display: table-cell;
+
+}
+

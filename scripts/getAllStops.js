@@ -1,7 +1,10 @@
-function getTimetable() {
+$(document).ready(function () {
+	
+	
+	
   var token = 'Bearer e5159b89-86c1-3cca-8412-59de037c674b';
-  return $.ajax({
-    url: 'https://gateway.api.cloud.wso2.com:443/t/mystop/tcat/v1/rest/StopDepartures/Get/165',
+  $.ajax({
+    url: 'https://gateway.api.cloud.wso2.com:443/t/mystop/tcat/v1/rest/Stops/GetAllStops',
     type: 'GET',
     dataType: 'json',
     beforeSend: function(xhr) {
@@ -9,11 +12,11 @@ function getTimetable() {
     },
     //data: 'json=' + escape(JSON.stringify(createRequestObject)),
     success: function(msg) {
-      var data = JSON.stringify(msg);
-      //TimeTable(msg);
+      console.log(msg);
+      createDropdown(msg);
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
       alert(errorThrown);
     }
   });
-}
+});

@@ -10,15 +10,14 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">  -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="scripts/createTimetable.js" type="text/javascript"></script> 
+  <script src="scripts/create.js" type="text/javascript"></script> 
 </head>
 
 <body>
-  
+
   <div id="header">
     <img alt="tcat_logo" src="images/tcat_logo.png">
   </div>
-
 
   <nav>
     <ul>
@@ -28,28 +27,36 @@
     </ul>
   </nav>
 
-  <script src="scripts/getTimetable.js" type="text/javascript"></script> 
-    <!--<p><strong>Route 30:</strong> Estimated Arrival Times</p>--> 
   
-  <!--script type="text/javascript">
-  var mybutton=document.getElementById('button');
-   button.onclick=   -->
-   
-	
   
-  <div id="time">
-    
-    <!-- call the api -->
-    <!--<script src="scripts/new_file.js" type="text/javascript"></script>  -->
-	
-		
+  <div id="route30">
+    <!--<p><strong>Route 30:</strong> Estimated Arrival Times</p>-->
+	<button type="button" onclick="myFunction()" class="btn btn-primary">Route 30</button>
+    <!--route30 info sent here -->
+  </div>
+  
+  <script src="scripts/getTimetable.js" type="text/javascript"></script>
   
       <!--<button class="btn" type="submit">Button</button> -->
 	 
-  <script language="javascript">
-    getTimetable();
-  </script> 
-  
+  <script>
+  function myFunction(){
+	document.write("<p><strong>Estimated Arrival Times</p>");
+	var x= document.createElement("BUTTON");
+	var t = document.createTextNode("Click me");
+	
+    x.appendChild(t);
+    document.body.appendChild(x);
+  }
+  </script>
+
+  <div id="route32">
+    <!--<p><strong>Route 32:</strong> Estimated Arrival Times</p> -->
+	<br></br>
+	<button type="button" onclick="myFunction()" class="btn btn-primary">Route 32</button>
+    <!--route32 info sent here -->
+  </div>
+
   
 
 </body>
