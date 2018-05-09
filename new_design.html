@@ -14,7 +14,8 @@
   <script src="scripts/createTimetable.js" type="text/javascript"></script>
   <script src="scripts/getTimetable.js" type="text/javascript"></script> 
   <script src="scripts/getWeather.js" type="text/javascript"></script> 
-  <script language="javascript" type="text/javascript" src="scripts/getAlert.js"> </script>
+  <script language="javascript" type="text/javascript" src="scripts/Alert.js"> </script>
+  <script language="javascript" type="text/javascript" src="scripts/displayAlert.js"> </script>
   
 </head>
 
@@ -131,13 +132,15 @@ html {
 		scrollbar = document.createElement('div');
 		scrollbar.id = "scrollbar";
 		scrollbar.behavior = "scroll";
+		scrollbar.scrollamount = "10";
 		scrollbar.direction = "left";
-		scrollbar.style.position = "absolute";
-		mapPanel.style.top = "10%";
 //		scrollbar.innerHTML = "testing";
-		scrollbar.scrollamount = "5";
+		scrollbar.style.position="relative";
+		scrollbar.style.top = "-6.2%";
+		scrollbar.style.height = "6.5%";
 		var temp = document.createElement("p");
-		temp.innerHTML = "SERVICE ALERTS";
+		console.log("test");
+		//temp.innerHTML = "SERVICE ALERTS"; 
 		scrollbar.appendChild(temp);
 		//scrollbar.innerHTML = "<marquee behavior=\"scroll\" direction=\"left\">SERVICE ALERTS !! </marquee>";
 		document.getElementById("back_panel").appendChild(scrollbar);
@@ -151,7 +154,7 @@ html {
 				
 		}
 
-	}
+	} 
 	function createClockPanel() {
 		var clockPanel = document.createElement("div");
 
@@ -200,12 +203,14 @@ html {
 	createClockPanel();
 	runClock();
 
-	var bus_locs, timetable_info, weather;
+	var bus_locs, timetable_info, weather,alert;
 
-    getBuses2();
+    
+	getBuses2();
     getTimetable();
     getWeather();
-    update();
+	getAlert();
+	update();
     //getMsg(); 
     /*function setMsg (data) {
       msg = data;
@@ -226,10 +231,8 @@ html {
         timetable_info = a1;
         var schedule = Timetable(timetable_info);
         displayTimetable(schedule);
-
-    })
-	
-	$.when(getAlert()).done(function (a1, a2, a3) {
+	  })	
+	  $.when(getAlert()).done(function (a1, a2, a3) {
         alerts = a1;
 		console.log(alerts);
 		//displayAlerts(alert);
@@ -242,6 +245,7 @@ html {
         setTimeout(update, 60000);
       });
     }
+	
 
 </script>
 
