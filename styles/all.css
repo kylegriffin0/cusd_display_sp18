@@ -44,7 +44,7 @@ nav li:hover {
 #weather {
     position:relative;
     left:93%;
-    top: -10%;
+    top: -9%;
     width:5%;
     color:black;
 }
@@ -52,8 +52,8 @@ nav li:hover {
 #scrollbar {
     overflow:hidden;
     white-space: nowrap;
-    color:black;
-    background-color:orange;
+    color:white;
+    background-color:#535353;
     height:5%;
     font-size: 22pt;
     font-weight: 500;

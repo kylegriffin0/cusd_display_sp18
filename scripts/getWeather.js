@@ -5,7 +5,7 @@ function getWeather() {
       type: 'GET',
       dataType: 'json',
       success: function(msg) {
-
+        console.log(msg);
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
         alert(errorThrown);

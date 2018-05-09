@@ -109,7 +109,6 @@ html {
 		refPanel.appendChild(edt);
 
 		document.getElementById("timetable_panel").appendChild(refPanel);
-		console.log(refPanel.parent);
 
 	}
 
@@ -187,12 +186,6 @@ html {
 	createClockPanel();
 	runClock();
 
-	var circ1 = document.createElement("circle")
-	circ1.setAttribute("cx", width * .475)
-	circ1.setAttribute("cy", height * .025)
-	circ1.setAttribute("r", 3)
-	circ1.setAttribute("fill", "red")
-
 	var bus_locs, timetable_info, weather;
 
     getBuses2();
@@ -222,7 +215,7 @@ html {
 
     })
       .then(function() {
-        setTimeout(update,60000);
+        setTimeout(update, 60000);
       });
     }
 

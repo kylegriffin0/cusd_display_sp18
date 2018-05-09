@@ -1,0 +1,10 @@
+Progress from previous semester:
+- Last semester vs. this semester screenshots - created a functional, useable site
+- Interviewed sample users
+- Reworked the code to be useable with any stop, rather than hardcoded for the Green Street stop
+- Included new features (service alerts, clock, weather, bus route labels)
+
+Next semester:
+- Integrate data from the solar controller into the site display (amount of energy generated/saved for the day, usage of USB chargers in shelter, etc.)
+- Continue working with users and iterating on the current design - adding, removing, or revamping certain display elements
+- Finish actualizing the system on the Raspberry Pi and screen infrastructure within the shelter itself

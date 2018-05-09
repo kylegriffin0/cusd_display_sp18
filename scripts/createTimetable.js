@@ -1,5 +1,4 @@
 function Timetable(msg) {
-  console.log(msg);
   //RouteDirections is an array of Route objects - all buses that stop at the defined StopID, grouped by route
   //Departures is an array of departure + arrival times for each bus in the specific route, within the Route object
   //RouteID is the route number, within the Route object
@@ -47,13 +46,15 @@ function Timetable(msg) {
       //console.log(formatted_eta);
       //console.log(formatted_edt);
       //console.log(until_arriv);
-
+      console.log(unix_edt);
       // Put it all into a bus_time 'object' which is pushed onto the schedule
       bus_time.Route = (msg[0].RouteDirections[i].RouteId)
       bus_time.NextStop = 
       bus_time.ETA = formatted_eta;
+      bus_time.ETA_for_sort = unix_eta;
       bus_time.UntilArriv = until_arriv;
       bus_time.EDT = formatted_edt;
+      bus_time.EDT_for_sort = unix_edt;
       bus_time.UntilDep = until_dep;
       bus_time.Destination = msg[0].RouteDirections[i].Departures[j].Trip.InternetServiceDesc;
       schedule.push(bus_time);
@@ -73,15 +74,17 @@ function Timetable(msg) {
 }
   
 
-// Sorting the schedule based on ETA - might want to use ETD?
+// Sorting the schedule based on EDT. Need a specific EDT_for_sort that uses the
+// unix time format, as otherwise would run into issues with buses that leave early
+// the next morning. (i.e. a bus leaving at 12:30 AM Tuesday would show up as leaving before
+// a bus that departs at 11:00 PM Monday, since 12:30 AM is earlier than 11:00 PM)
 
 function sortFunction(a, b) {
-
-  if (a.EDT === b.EDT) {
+  if (a.EDT_for_sort === b.EDT_for_sort) {
     return 0;
   }
   else {
-    return (a.EDT < b.EDT ? -1 : 1);
+    return (a.EDT_for_sort < b.EDT_for_sort ? -1 : 1);
   }
 }
 
@@ -91,6 +94,9 @@ function displayTimetable (schedule) {
   var eta, dest, route, edt, flag;
 
   var posi = document.getElementById("timetable_panel").getBoundingClientRect();
+
+  // Remove all of the previous timetable data (would otherwise just keep appending)
+  $('.timedata').remove();
 
   // WILL NEED TO CHANGE FOR LOOP SIZE TO ACCOUNT FOR SCREEN SIZE
   for (var i = 0; i < schedule.length; i++) {
