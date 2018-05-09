@@ -46,7 +46,6 @@ function Timetable(msg) {
       //console.log(formatted_eta);
       //console.log(formatted_edt);
       //console.log(until_arriv);
-      console.log(unix_edt);
       // Put it all into a bus_time 'object' which is pushed onto the schedule
       bus_time.Route = (msg[0].RouteDirections[i].RouteId)
       bus_time.NextStop = 
@@ -88,7 +87,7 @@ function sortFunction(a, b) {
   }
 }
 
-function displayTimetable (schedule) {
+function displayTimetable (schedule, colormap, colors, colorcount) {
   var timediv = document.getElementById("timetable_panel");
   var linebreak = document.createElement("br");
   var eta, dest, route, edt, flag;
@@ -97,9 +96,14 @@ function displayTimetable (schedule) {
 
   // Remove all of the previous timetable data (would otherwise just keep appending)
   $('.timedata').remove();
-
   // WILL NEED TO CHANGE FOR LOOP SIZE TO ACCOUNT FOR SCREEN SIZE
   for (var i = 0; i < schedule.length; i++) {
+
+      if (!colormap[schedule[i].Route]) {
+        colormap[schedule[i].Route] = colors[colorcount];
+        colorcount++;
+      } 
+
       var div = document.createElement("div");
       div.setAttribute("id", "div" + schedule[i].Route);
       div.className = "timedata";
@@ -115,7 +119,14 @@ function displayTimetable (schedule) {
 
       route = document.createElement("div");
       route.className = "timeroute";
-      route.innerHTML = schedule[i].Route;
+      div.appendChild(route);
+      
+      route.innerHTML = "<svg height=\"75px\" width=\"100%\" top=\"50%\" left=\"50%\"  display=\"block\"> " + 
+        "<circle r=\"25\" cx=\"50%\" cy=\"50%\" fill=\"" + 
+        colormap[schedule[i].Route] + "\" /> " +
+        "<text x=\"50%\" y=\"50%\" font-size=\"30px\" fill=\"white\" text-anchor=\"middle\" dy=\".3em\">" +
+        schedule[i].Route.toString() + "</text></svg>";
+
 
       dest = document.createElement("div");
       dest.className = "timedest";
@@ -123,13 +134,15 @@ function displayTimetable (schedule) {
 
       edt = document.createElement("div");
       edt.className = "timeedt";
-      edt.innerHTML = schedule[i].UntilDep + " min";
 
-      div.appendChild(route);
+      // This currently stops the countdown until departure at 0 mins - might want to account for buses being 
+      // late
+      edt.innerHTML = ((schedule[i].UntilDep >= 0) ? schedule[i].UntilDep + " min" : 0 + " min (late)");
       div.appendChild(dest);
       div.appendChild(edt);
 
   }
+  return colormap;
 }
 
 

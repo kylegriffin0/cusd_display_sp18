@@ -58,12 +58,13 @@ nav li:hover {
     font-size: 22pt;
     font-weight: 500;
     vertical-align: middle;
+    align-items: center;
 }
 
 #scrollbar p {
     display: inline-block;
     padding-left: 100%;
-    animation: scrollbar 10s linear infinite;
+    animation: scrollbar 20s linear infinite;
 }
 
 @keyframes scrollbar {
@@ -71,7 +72,7 @@ nav li:hover {
     100% { transform: translate(-100%, 0); }
 }
 body {
-    font-family: Roberto, sans-serif;
+    font-family: Roboto, sans-serif;
     font-style: normal;
     font-weight: 100;
 }
@@ -83,6 +84,11 @@ ul {
     overflow: hidden;
     display: inline-block;
     vertical-align: top;   
+}
+
+.backSVG {
+    width : 50px;
+    height : 50px;
 }
 
 .refroute {
@@ -149,7 +155,7 @@ ul {
     text-align : left;
     vertical-align : middle;
     font-weight : bold;
-    font-style: italic;
+    /*font-style: italic;*/
     position:relative;
     display: table-cell;
 }
@@ -160,6 +166,12 @@ ul {
     vertical-align : middle;
     font-weight : bold;
     display: table-cell;
+}
+
+.weatherPanel {
+    vertical-align: middle;
+    font-weight: bold;
+    color : white;
 
 }
 

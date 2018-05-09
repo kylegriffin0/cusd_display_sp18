@@ -14,8 +14,9 @@
   <script src="scripts/createTimetable.js" type="text/javascript"></script>
   <script src="scripts/getTimetable.js" type="text/javascript"></script> 
   <script src="scripts/getWeather.js" type="text/javascript"></script> 
-  <script src="scripts/setWeather.js" type="text/javascript"></script> 
-  <script src="scripts/getAlert.js" type="text/javascript"></script>
+  <script language="javascript" type="text/javascript" src="scripts/Alert.js"> </script>
+  <script language="javascript" type="text/javascript" src="scripts/displayAlert.js"> </script>
+  
 </head>
 
 <style>
@@ -40,7 +41,6 @@ html {
 	function createTopBar () {
 		var topbar = document.createElement("div");
 		topbar.id = "top_bar";
-
 		topbar.style.width = "100%";
 		topbar.style.height = "5%";
 		topbar.style.verticalAlign = "middle";
@@ -48,27 +48,23 @@ html {
 
 		// TCAT Logos
 		var buslogo = new Image();
+
 		buslogo.src = "images/TCAT_full_logo.png";
 		buslogo.alt = "TCAT";
-		buslogo.style = "width:10%;height:100%;display:inline-block"
-		topbar.appendChild(buslogo);
-		document.getElementById("back_panel").appendChild(topbar);
-	}
+		buslogo.style = "width:10%;height:100%;"
 
-	function createWeatherPanel() {
-		var weatherPanel = document.createElement("div");
-		weatherPanel.id = "weather_panel";
-		weatherPanel.className = "weatherPanel";
-		weatherPanel.style.fontSize = ((.05 * height) * .75).toString() + "px";
-		weatherPanel.style.width = "10%";
-		weatherPanel.style.height = "5%"
-		weatherPanel.style.position = "absolute";
-		weatherPanel.style.left = "90%"
-		weatherPanel.style.top = "0%";
-		weatherPanel.style.display = "flex";
-		weatherPanel.style.alignItems = "center";
-		weatherPanel.style.justifyContent = "center";
-		document.getElementById("back_panel").appendChild(weatherPanel);
+		/*
+		var tcatlogo = new Image();
+		tcatlogo.src = "images/TCAT Watermark.png";
+		tcatlogo.alt = "TCAT";
+
+		tcatlogo.style = "width:8%;height:60%;vertical-align:middle"
+		 */
+
+		topbar.appendChild(buslogo);
+		//topbar.appendChild(tcatlogo);
+
+		document.getElementById("back_panel").appendChild(topbar);
 
 	}
 
@@ -132,31 +128,6 @@ html {
 		document.getElementById("back_panel").appendChild(mapPanel);
 	}
 
-	
-	function createScrollBar(alertMsg) {
-		scrollbar = document.createElement('div');
-		scrollbar.id = "scrollbar";
-		scrollbar.behavior = "scroll";
-		scrollbar.direction = "left";
-//		scrollbar.innerHTML = "testing";
-		var temp = document.createElement("p");
-		console.log("test");
-		//temp.innerHTML = "SERVICE ALERTS"; 
-		scrollbar.appendChild(temp);
-		//scrollbar.innerHTML = "<marquee behavior=\"scroll\" direction=\"left\">SERVICE ALERTS !! </marquee>";
-		document.getElementById("back_panel").appendChild(scrollbar);
-		
-		for (i = 0; i < alertMsg.length; i++)
-		{	
-			console.log("HELO");
-			console.log(alertMsg[i].messageId);
-			//temp.innerHTML = alertMsg[i].messageId;
-			temp.innerHTML = alertMsg[i].Message;
-				
-		}
-	}
-
-/*
 	function createScrollBar(alertMsg) {
 		scrollbar = document.createElement('div');
 		scrollbar.id = "scrollbar";
@@ -183,7 +154,7 @@ html {
 				
 		}
 
-	} */
+	} 
 	function createClockPanel() {
 		var clockPanel = document.createElement("div");
 
@@ -225,7 +196,6 @@ html {
 	}
 
 	createTopBar();
-	createWeatherPanel();
 	createTimetablePanel();
 	createRefPanel();
 	createMapPanel();
@@ -233,59 +203,54 @@ html {
 	createClockPanel();
 	runClock();
 
-	var bus_locs, timetable_info, weather;
+	var bus_locs, timetable_info, weather,alert;
 
-    getBuses2();
+    
+	getBuses2();
     getTimetable();
     getWeather();
-    update();
+	getAlert();
+	update();
     //getMsg(); 
     /*function setMsg (data) {
       msg = data;
     }*/
 
-    // Will need more colors to work with more routes
-
-	var colors = ["#7FFFD4", "#8A2BE2", "#A52A2A", "#6495ED", "#00CED1", "#FF1493", " #1E90FF",
-    "#B22222", "#FFD700", "#CD5C5C", "#ADFF2F", "#4B0082", "#ADD8E6", "#20B2AA", "#9370DB",
-    "#FF4500", "#BC8F8F", "#FF6347", "#EE82EE", "#F5DEB3", "#9ACD32", "#D8BFD8", "#008080",
-    "#00FF7F", "#6A5ACD", "#87CEEB", "#FF0000", "#E9967A"];
-
-	var colormap = {};
-	var colorcount = 0;
-
     function update () {
 	  $.when(getWeather()).done(function (a1, a2, a3) {
 	  	weather = a1;
-	  	setWeather(a1);
 	  	console.log(weather);
 
 	  })
-      $.when(getTimetable()).done(function (a1, a2, a3) {
-	        timetable_info = a1;
-	        var schedule = Timetable(timetable_info);
-	        displayTimetable(schedule, colormap, colors, colorcount);
-	  })
-      .then(function () {
-      	$.when(getBuses2()).done(function (a1, a2, a3) {
-	        bus_locs = a1;
-	        DrawMap();
-	        MapRoute(bus_locs, colormap, colors, colorcount);
-      	})
+      $.when(getBuses2()).done(function (a1, a2, a3) {
+        bus_locs = a1;
+        DrawMap();
+        MapRoute(bus_locs);
       })
-      $.when(getAlert()).done(function (a1, a2, a3) {
+      $.when(getTimetable()).done(function (a1, a2, a3) {
+        timetable_info = a1;
+        var schedule = Timetable(timetable_info);
+        displayTimetable(schedule);
+	  })	
+	  $.when(getAlert()).done(function (a1, a2, a3) {
         alerts = a1;
 		console.log(alerts);
 		//displayAlerts(alert);
 		createScrollBar(alerts);
 		console.log("hello");
         
+
 	  })
       .then(function() {
         setTimeout(update, 60000);
       });
     }
+	
 
 </script>
+
+<div id="weather">
+<!-- weather widget start --><a target="_blank" href="http://www.booked.net/weather/ithaca-3940"><img src="https://w.bookcdn.com/weather/picture/21_3940_1_1_3498db_250_1_ffffff_ffffff_1_2071c9_ffffff_0_6.png?scode=124&domid=w209&anc_id=8920"  alt="booked.net"/></a><!-- weather widget end -->
+</div>
 </body>
 </html>
